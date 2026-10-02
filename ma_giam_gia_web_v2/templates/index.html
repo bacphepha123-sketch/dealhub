@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}DealHub - Mã giảm giá{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-text">
+            <p class="badge">🔥 DEAL MỚI MỖI NGÀY</p>
+            <h1>Tổng hợp mã giảm giá<br><span>mua sắm tiết kiệm hơn</span></h1>
+            <p>Tìm nhanh voucher và mã giảm giá từ Shopee, Lazada và TikTok Shop.</p>
+
+            <form class="search" method="GET">
+                <input name="q" value="{{ keyword }}" placeholder="Tìm tên deal hoặc mã giảm giá...">
+                <button>Tìm kiếm</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<main class="container">
+    <div class="platforms">
+        <a class="{{ 'selected' if platform == 'all' else '' }}" href="{{ url_for('home') }}">Tất cả mã</a>
+        <a class="{{ 'selected shopee' if platform == 'Shopee' else '' }}" href="?platform=Shopee">Lọc Shopee</a>
+        <a class="{{ 'selected lazada' if platform == 'Lazada' else '' }}" href="?platform=Lazada">Lọc Lazada</a>
+        <a class="{{ 'selected tiktok' if platform == 'TikTok Shop' else '' }}" href="?platform=TikTok+Shop">Lọc TikTok Shop</a>
+    </div>
+
+    <div class="shop-links">
+        <div class="shop-links-title">Mua sắm trực tiếp</div>
+        <a class="shop-link shopee-link" href="https://shopee.vn/" target="_blank" rel="noopener noreferrer">
+            <span class="shop-logo">🛍️</span>
+            <span><strong>Shopee</strong><small>Mở Shopee</small></span>
+            <b>→</b>
+        </a>
+        <a class="shop-link lazada-link" href="https://www.lazada.vn/" target="_blank" rel="noopener noreferrer">
+            <span class="shop-logo">🛒</span>
+            <span><strong>Lazada</strong><small>Mở Lazada</small></span>
+            <b>→</b>
+        </a>
+        <a class="shop-link tiktok-link" href="https://shop.tiktok.com/" target="_blank" rel="noopener noreferrer">
+            <span class="shop-logo">🎵</span>
+            <span><strong>TikTok Shop</strong><small>Mở TikTok Shop</small></span>
+            <b>→</b>
+        </a>
+    </div>
+
+    <div class="section-head">
+        <div>
+            <h2>Mã giảm giá mới nhất</h2>
+            <p>{{ coupons|length }} mã đang hiển thị</p>
+        </div>
+    </div>
+
+    {% if coupons %}
+    <div class="coupon-grid">
+        {% for c in coupons %}
+        <article class="coupon-card">
+            <div class="card-top">
+                <span class="platform {{ c.platform|lower|replace(' ', '-') }}">{{ c.platform }}</span>
+                <span class="discount">-{{ c.discount }}</span>
+            </div>
+
+            <h3>{{ c.title }}</h3>
+            <p class="desc">{{ c.description }}</p>
+
+            <div class="code-box">
+                <span>{{ c.code }}</span>
+                <button onclick="copyCode('{{ c.code }}', this)">Copy mã</button>
+            </div>
+
+            <div class="meta">
+                <span>Đơn tối thiểu: {{ c.min_order or 'Không yêu cầu' }}</span>
+                <span>HSD: {{ c.expires_at or 'Không rõ' }}</span>
+            </div>
+
+            <a class="deal-button" href="{{ c.link or '#' }}" target="_blank">Đến {{ c.platform }} →</a>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+        <div class="empty">Không tìm thấy mã phù hợp.</div>
+    {% endif %}
+</main>
+{% endblock %}

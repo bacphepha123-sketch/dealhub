@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DealHub{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="header">
+    <div class="container nav">
+        <a class="logo" href="{{ url_for('home') }}">Deal<span>Hub</span></a>
+        <nav>
+            <a href="{{ url_for('home') }}">Mã giảm giá</a>
+            {% if session.get('admin') %}
+                <a href="{{ url_for('admin') }}">Quản trị</a>
+                <a href="{{ url_for('logout') }}">Đăng xuất</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Admin</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="container flash-area">
+        {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+{% block content %}{% endblock %}
+
+<footer>
+    <div class="container">
+        <strong>DealHub</strong> — Tổng hợp mã giảm giá Shopee, Lazada & TikTok Shop.
+    </div>
+</footer>
+
+<script>
+function copyCode(code, button) {
+    navigator.clipboard.writeText(code).then(() => {
+        const old = button.innerText;
+        button.innerText = "Đã copy ✓";
+        setTimeout(() => button.innerText = old, 1500);
+    });
+}
+</script>
+</body>
+</html>

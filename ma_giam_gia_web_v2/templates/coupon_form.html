@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} - DealHub{% endblock %}
+
+{% block content %}
+<div class="form-page container">
+    <div class="form-card">
+        <a class="back" href="{{ url_for('admin') }}">← Quay lại quản trị</a>
+        <h1>{{ action }}</h1>
+        <p>Điền thông tin voucher bên dưới.</p>
+
+        <form method="POST">
+            <div class="form-grid">
+                <div>
+                    <label>Sàn thương mại điện tử</label>
+                    <select name="platform" required>
+                        {% for p in ['Shopee', 'Lazada', 'TikTok Shop'] %}
+                        <option value="{{ p }}" {% if coupon and coupon.platform == p %}selected{% endif %}>{{ p }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label>Mã giảm giá</label>
+                    <input name="code" required value="{{ coupon.code if coupon else '' }}" placeholder="VD: SALE50">
+                </div>
+
+                <div class="wide">
+                    <label>Tiêu đề</label>
+                    <input name="title" required value="{{ coupon.title if coupon else '' }}" placeholder="Giảm 50K đơn từ 299K">
+                </div>
+
+                <div>
+                    <label>Mức giảm</label>
+                    <input name="discount" required value="{{ coupon.discount if coupon else '' }}" placeholder="50K / 10%">
+                </div>
+
+                <div>
+                    <label>Đơn tối thiểu</label>
+                    <input name="min_order" value="{{ coupon.min_order if coupon else '' }}" placeholder="299K">
+                </div>
+
+                <div>
+                    <label>Ngày hết hạn</label>
+                    <input type="date" name="expires_at" value="{{ coupon.expires_at if coupon else '' }}">
+                </div>
+
+                <div>
+                    <label>Link đến sàn</label>
+                    <input name="link" value="{{ coupon.link if coupon else '' }}" placeholder="https://...">
+                </div>
+
+                <div class="wide">
+                    <label>Mô tả</label>
+                    <textarea name="description" rows="4" placeholder="Điều kiện sử dụng...">{{ coupon.description if coupon else '' }}</textarea>
+                </div>
+
+                <div class="wide">
+                    <label>Trạng thái</label>
+                    <select name="active">
+                        <option value="1" {% if not coupon or coupon.active %}selected{% endif %}>Hiển thị</option>
+                        <option value="0" {% if coupon and not coupon.active %}selected{% endif %}>Ẩn</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="primary">Lưu mã giảm giá</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

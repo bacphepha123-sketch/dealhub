@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Đăng nhập Admin{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+    <form class="auth-card" method="POST">
+        <div class="auth-icon">🔐</div>
+        <h1>Đăng nhập Admin</h1>
+        <p>Quản lý mã giảm giá của website.</p>
+
+        <label>Tài khoản</label>
+        <input name="username" required placeholder="admin">
+
+        <label>Mật khẩu</label>
+        <input type="password" name="password" required placeholder="••••••">
+
+        <button class="primary full">Đăng nhập</button>
+    </form>
+</div>
+{% endblock %}

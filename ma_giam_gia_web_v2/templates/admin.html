@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Quản trị - DealHub{% endblock %}
+
+{% block content %}
+<main class="container admin-page">
+    <div class="admin-head">
+        <div>
+            <p class="badge">ADMIN</p>
+            <h1>Quản lý mã giảm giá</h1>
+            <p>Thêm, sửa hoặc xóa các voucher trên trang chủ.</p>
+        </div>
+        <a class="primary button-link" href="{{ url_for('add_coupon') }}">+ Thêm mã mới</a>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sàn</th>
+                    <th>Mã</th>
+                    <th>Nội dung</th>
+                    <th>Giảm</th>
+                    <th>HSD</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for c in coupons %}
+                <tr>
+                    <td><strong>{{ c.platform }}</strong></td>
+                    <td><code>{{ c.code }}</code></td>
+                    <td>{{ c.title }}</td>
+                    <td>{{ c.discount }}</td>
+                    <td>{{ c.expires_at or '-' }}</td>
+                    <td>
+                        {% if c.active %}
+                            <span class="status on">Đang hiện</span>
+                        {% else %}
+                            <span class="status off">Đã ẩn</span>
+                        {% endif %}
+                    </td>
+                    <td class="actions">
+                        <a href="{{ url_for('edit_coupon', coupon_id=c.id) }}">Sửa</a>
+                        <form method="POST" action="{{ url_for('delete_coupon', coupon_id=c.id) }}" onsubmit="return confirm('Xóa mã này?')">
+                            <button class="delete">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}
