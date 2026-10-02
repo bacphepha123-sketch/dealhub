@@ -7,8 +7,8 @@ app = Flask(__name__)
 app.secret_key = "change-this-secret-key"
 DB = "coupons.db"
 
-ADMIN_USER = "admin"
-ADMIN_PASSWORD = "123456"
+ADMIN_USER = "maithiquyen"
+ADMIN_PASSWORD = "363636"
 
 
 def get_db():
